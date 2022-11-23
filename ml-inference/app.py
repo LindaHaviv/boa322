@@ -59,6 +59,11 @@ def lambda_handler(event, context):
     
     return {
         'statusCode': 200,
+         'headers': {
+            "Access-Control-Allow-Headers": "Content-Type,Authorization,X-Amz-Date,X-Api-Key,X-Amz-Security-Token",
+            "Access-Control-Allow-Methods": "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT",
+            "Access-Control-Allow-Origin": "*"
+        },
         'body': json.dumps(
             {
                 "predicted_label": prediction,

@@ -14,6 +14,11 @@ Globals:
     Environment:
       Variables:
         MODEL_DIR: /mnt/ml/models/
+  Api:
+    Cors:
+      AllowMethods: "'*'"
+      AllowHeaders: "'*'"
+      AllowOrigin: "'*'"
 
 Parameters:
   SrcBucket:
