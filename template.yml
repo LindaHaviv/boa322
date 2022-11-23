@@ -16,9 +16,10 @@ Globals:
         MODEL_DIR: /mnt/ml/models/
   Api:
     Cors:
+      AllowMethods: "'POST'"
+      AllowHeaders: "'content-type'"
       AllowOrigin: "'*'"
-      AllowHeaders: "*"
-      AllowMethods: "'*'"
+
 
 
 Parameters:
@@ -28,6 +29,15 @@ Parameters:
     Default: mybucket-ml-models
 
 Resources:
+
+  ApiGatewayApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors:
+        AllowMethods: "'POST'"
+        AllowHeaders: "'X-Forwarded-For'"
+        AllowOrigin: "'*'"
 
   MyS3Bucket:
     Type: 'AWS::S3::Bucket'
