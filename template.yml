@@ -14,13 +14,6 @@ Globals:
     Environment:
       Variables:
         MODEL_DIR: /mnt/ml/models/
-  Api:
-    Cors:
-      AllowMethods: "'POST'"
-      AllowHeaders: "'content-type'"
-      AllowOrigin: "'*'"
-
-
 
 Parameters:
   SrcBucket:
@@ -29,15 +22,14 @@ Parameters:
     Default: mybucket-ml-models
 
 Resources:
-
-  ApiGatewayApi:
-    Type: AWS::Serverless::Api
-    Properties:
-      StageName: Prod
-      Cors:
-        AllowMethods: "'POST'"
-        AllowHeaders: "'X-Forwarded-For'"
-        AllowOrigin: "'*'"
+  MyAPI:
+      Type: AWS::Serverless::Api
+      Properties:
+        StageName: Prod
+        Cors:
+          AllowMethods: "'POST,OPTIONS'"
+          AllowHeaders: "'content-type'"
+          AllowOrigin: "'*'"
 
   MyS3Bucket:
     Type: 'AWS::S3::Bucket'
@@ -221,6 +213,7 @@ Resources:
           Properties:
             Path: /classify_song
             Method: POST
+            RestApiId: !Ref MyAPI
 
     Metadata:
       Dockerfile: Dockerfile
@@ -233,5 +226,4 @@ Outputs:
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   InferenceApi:
     Description: "API Gateway endpoint URL for Prod stage for Inference function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/classify_song/"
-
+    Value: !Sub "https://${MyAPI}.execute-api.${AWS::Region}.amazonaws.com/Prod/classify_song/"
